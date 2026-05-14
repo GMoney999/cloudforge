@@ -1,0 +1,15 @@
+[package]
+name = "cloudforge"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.6", features = ["derive"] }
+color-eyre = "0.6"
+eyre = "0.6"
+serde = { version = "1", features = ["derive"] }
+serde_yaml = "0.9"
+tokio = { version = "1.52", features = ["full"] }
+tracing = "0.1"
+tracing-error = "0.2"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "registry"] }
