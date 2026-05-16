@@ -1,0 +1,70 @@
+[package]
+name = "linear-mcp-client"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = ["bearer-auth"]
+bearer-auth = []
+oauth = ["dep:base64", "dep:sha2", "dep:rand"]
+otel = ["dep:opentelemetry", "dep:tracing-opentelemetry", "dep:opentelemetry-otlp"]
+test-utils = ["dep:wiremock", "dep:tracing-subscriber"]
+
+[dependencies]
+# --- MCP protocol ---
+rmcp = { version = "1.7", features = ["client", "transport-streamable-http"] }
+
+# --- HTTP + TLS ---
+reqwest = { version = "0.13", default-features = false, features = [
+    "rustls-tls", "json", "stream", "gzip"
+] }
+wiremock = { version = "0.6", optional = true }
+
+# --- Async runtime ---
+tokio = { version = "1", features = ["full"] }
+
+# --- Serialization ---
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_path_to_error = "0.1"
+
+# --- Error handling ---
+thiserror = "2"
+anyhow = "1"
+
+# --- Secrets ---
+secrecy = { version = "0.10", features = ["serde"] }
+
+# --- URL ---
+url = { version = "2", features = ["serde"] }
+
+# --- Middleware / Resilience ---
+tower = { version = "0.5", features = ["retry", "timeout", "util", "buffer"] }
+tower-http = { version = "0.6", features = ["trace", "timeout"] }
+tokio-retry = "0.3"
+
+# --- Tracing ---
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "registry"], optional = true }
+
+
+# --- Typed IDs + time ---
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# --- Async traits ---
+async-trait = "0.1"
+
+# --- OAuth extras (feature-gated) ---
+base64 = { version = "0.22", optional = true }
+sha2 = { version = "0.11", optional = true }
+rand = { version = "0.10", optional = true }
+
+# --- OTel extras (feature-gated) ---
+opentelemetry = { version = "0.32", optional = true }
+tracing-opentelemetry = { version = "0.32", optional = true }
+opentelemetry-otlp = { version = "0.32", optional = true, features = ["tls"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+color-eyre = "0.6"
