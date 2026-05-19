@@ -12,11 +12,11 @@ test-utils = ["dep:wiremock", "dep:tracing-subscriber"]
 
 [dependencies]
 # --- MCP protocol ---
-rmcp = { version = "1.7", features = ["client", "transport-streamable-http"] }
+rmcp = { version = "1.7", features = ["client", "transport-streamable-http-client", "transport-streamable-http-client-reqwest"] }
 
 # --- HTTP + TLS ---
 reqwest = { version = "0.13", default-features = false, features = [
-    "rustls-tls", "json", "stream", "gzip"
+    "default-tls", "json", "stream", "gzip"
 ] }
 wiremock = { version = "0.6", optional = true }
 
